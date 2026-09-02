@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SupportPilot — Milestone 1
 
 Modern interactive website: **Login → Dashboard**, SQLite, Flask, AI classification.
@@ -32,3 +33,6 @@ Open http://127.0.0.1:5000
 - `templates/login.html` — login page
 - `templates/index.html` — interactive dashboard
 - `static/style.css` — theme
+=======
+# SupportPilot
+>>>>>>> 26cec1d3d63775ff2185feabec6a39897aaf94ab
