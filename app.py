@@ -1,4 +1,5 @@
 """
+<<<<<<< HEAD
 SupportPilot — AI Ticket Resolution Agent
 Login → JWT → Dashboard → Resolution
 """
@@ -28,6 +29,23 @@ from auth import (
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET", "supportpilot-secret-key")
+=======
+SupportPilot Milestone 1 — Flask app with login, SQLite, AI classification.
+Any username + password "123" works.
+Run:  python app.py
+Open: http://127.0.0.1:5000
+"""
+from functools import wraps
+from flask import (
+    Flask, request, jsonify, render_template, redirect,
+    url_for, flash, session
+)
+import database
+import classifier
+
+app = Flask(__name__)
+app.secret_key = "supportpilot-dev-key"
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 
 database.init_db()
 
@@ -46,13 +64,18 @@ PRIORITY_MEANING = {
 
 
 @app.context_processor
+<<<<<<< HEAD
 def inject_globals():
+=======
+def inject_meanings():
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     return {
         "severity_meaning": SEVERITY_MEANING,
         "priority_meaning": PRIORITY_MEANING,
     }
 
 
+<<<<<<< HEAD
 def _establish_session(user: dict, provider: str = "password"):
     """Set Flask session fields from a user row."""
     session["username"] = user["username"]
@@ -127,6 +150,15 @@ def _issue_token_response(user: dict, provider: str, redirect_to_dashboard=True)
         path="/",
     )
     return resp
+=======
+def login_required(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        if "username" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return wrapped
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 
 
 @app.route("/")
@@ -141,6 +173,7 @@ def login():
     if "username" in session:
         return redirect(url_for("dashboard"))
     error = None
+<<<<<<< HEAD
     mode = "signin"
     if request.method == "POST":
         try:
@@ -411,14 +444,34 @@ def profile_ppt():
         "email": session.get("email"),
         "role": session.get("role"),
     }), 200
+=======
+    if request.method == "POST":
+        username = request.form.get("username", "").strip()
+        password = request.form.get("password", "")
+        # Any name allowed; password must be 123
+        if username and password == "123":
+            session["username"] = username
+            session["full_name"] = username.title()
+            session["role"] = "employee"
+            return redirect(url_for("dashboard"))
+        if not username:
+            error = "Please enter a username"
+        else:
+            error = "Incorrect password. Use password: 123"
+    return render_template("login.html", error=error)
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 
 
 @app.route("/logout")
 def logout():
     session.clear()
+<<<<<<< HEAD
     resp = make_response(redirect(url_for("login")))
     resp.set_cookie("sp_token", "", expires=0)
     return resp
+=======
+    return redirect(url_for("login"))
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 
 
 @app.route("/dashboard")
@@ -426,18 +479,25 @@ def logout():
 def dashboard():
     tickets = database.get_all_tickets(limit=50)
     stats = database.get_stats()
+<<<<<<< HEAD
     metrics = get_rag_metrics()
     username = session.get("username")
     account = database.get_account_summary(username) if username else None
     history = database.get_login_history(username=username, limit=15) if username else []
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     return render_template(
         "index.html",
         tickets=tickets,
         stats=stats,
+<<<<<<< HEAD
         metrics=metrics,
         user=session,
         account=account,
         login_history=history,
+=======
+        user=session,
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
         active="dashboard",
     )
 
@@ -451,7 +511,10 @@ def submit_ticket():
     description = request.form.get("description", "").strip()
     department = request.form.get("department", "").strip()
     business_impact = request.form.get("business_impact", "Medium")
+<<<<<<< HEAD
     run_rag = request.form.get("run_rag") == "on"
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 
     if not description:
         flash("Please describe the issue before submitting.")
@@ -461,6 +524,7 @@ def submit_ticket():
         description, business_impact
     )
 
+<<<<<<< HEAD
     resolution_text = None
     resolution_json = None
     rag_result = None
@@ -480,6 +544,11 @@ def submit_ticket():
     ticket_id = database.insert_ticket(
         employee_name=employee_name or session.get("full_name", ""),
         email=email or session.get("email", ""),
+=======
+    ticket_id = database.insert_ticket(
+        employee_name=employee_name or session.get("full_name", ""),
+        email=email,
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
         title=title or description[:40],
         description=description,
         department=department,
@@ -487,6 +556,7 @@ def submit_ticket():
         severity=severity,
         priority=priority,
         confidence=confidence,
+<<<<<<< HEAD
         status="Resolved" if (run_rag and resolution_text) else "Open",
         resolution=resolution_text,
         resolution_json=json.dumps(resolution_json) if resolution_json else None,
@@ -500,6 +570,10 @@ def submit_ticket():
         )
         return redirect(url_for("dashboard") + f"#resolve&ticket={ticket_id}")
 
+=======
+    )
+
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     flash(
         f"Ticket #{ticket_id} submitted — Category: {category} ({confidence}%), "
         f"Severity: {severity}, Priority: {priority}"
@@ -508,13 +582,18 @@ def submit_ticket():
 
 
 @app.route("/api/ticket", methods=["POST"])
+<<<<<<< HEAD
 @login_required
 def api_create_ticket():
     """Create ticket, always persist to SQLite, then optionally run RAG."""
+=======
+def api_create_ticket():
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     data = request.get_json(silent=True) or {}
     description = data.get("description", "").strip()
     if not description:
         return jsonify({"error": "description is required"}), 400
+<<<<<<< HEAD
 
     business_impact = data.get("business_impact", "Medium")
     run_rag = data.get("run_rag", True)
@@ -570,12 +649,23 @@ def api_create_ticket():
         employee_name=data.get("employee", data.get("employee_name", session.get("full_name", ""))),
         email=data.get("email", session.get("email", "")),
         title=title,
+=======
+    business_impact = data.get("business_impact", "Medium")
+    category, confidence, severity, priority = classifier.process_ticket(
+        description, business_impact
+    )
+    ticket_id = database.insert_ticket(
+        employee_name=data.get("employee", data.get("employee_name", "")),
+        email=data.get("email", ""),
+        title=data.get("title", ""),
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
         description=description,
         department=data.get("department", ""),
         category=category,
         severity=severity,
         priority=priority,
         confidence=confidence,
+<<<<<<< HEAD
         status="Resolved" if resolution_text else "Open",
         resolution=resolution_text,
         resolution_json=json.dumps(resolution_json) if resolution_json else None,
@@ -585,10 +675,17 @@ def api_create_ticket():
         "ticket_id": ticket_id,
         "title": title,
         "description": description,
+=======
+    )
+    return jsonify({
+        "ticket_id": ticket_id,
+        "ticket": description,
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
         "category": category,
         "confidence": confidence,
         "severity": severity,
         "priority": priority,
+<<<<<<< HEAD
         "status": "Resolved" if resolution_text else "Open",
         "stored": True,
     }
@@ -613,10 +710,18 @@ def api_create_ticket():
 
 @app.route("/api/tickets", methods=["GET"])
 @login_required
+=======
+        "status": "Open",
+    })
+
+
+@app.route("/api/tickets", methods=["GET"])
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 def api_list_tickets():
     return jsonify(database.get_all_tickets(limit=100))
 
 
+<<<<<<< HEAD
 @app.route("/api/ticket/<int:ticket_id>", methods=["GET"])
 @login_required
 def api_get_ticket(ticket_id):
@@ -707,5 +812,7 @@ def api_account_history():
     return jsonify(database.get_login_history(username=username, limit=50))
 
 
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

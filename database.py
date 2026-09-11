@@ -1,9 +1,16 @@
 """
+<<<<<<< HEAD
 database.py — SQLite helpers for users + tickets (users, tickets, auth history)
 """
 import sqlite3
 import os
 import json
+=======
+database.py — SQLite helpers for users + tickets
+"""
+import sqlite3
+import os
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 from werkzeug.security import generate_password_hash, check_password_hash
 
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tickets.db")
@@ -22,6 +29,7 @@ def init_db():
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT UNIQUE NOT NULL,
+<<<<<<< HEAD
             password_hash TEXT,
             full_name TEXT,
             email TEXT,
@@ -29,10 +37,16 @@ def init_db():
             auth_provider TEXT DEFAULT 'password',
             google_id TEXT,
             avatar_url TEXT,
+=======
+            password_hash TEXT NOT NULL,
+            full_name TEXT,
+            role TEXT DEFAULT 'employee',
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
+<<<<<<< HEAD
     
     conn.execute(
         """
@@ -51,6 +65,8 @@ def init_db():
         """
     )
     
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS tickets (
@@ -65,12 +81,16 @@ def init_db():
             priority VARCHAR(10),
             confidence FLOAT,
             status VARCHAR(30) DEFAULT 'Open',
+<<<<<<< HEAD
             resolution TEXT,
             resolution_json TEXT,
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """
     )
+<<<<<<< HEAD
     # Safe migrations for older DBs
     for col, typedef in [
         ("resolution", "TEXT"),
@@ -104,6 +124,18 @@ def init_db():
             VALUES (?, ?, ?, ?, ?, 'password')
             """,
             (username, generate_password_hash(password), full_name, role, email),
+=======
+    # Demo users (password hashed)
+    demos = [
+        ("admin", "admin123", "System Admin", "admin"),
+        ("arun", "user123", "Arun Kumar", "employee"),
+        ("demo", "demo123", "Demo User", "employee"),
+    ]
+    for username, password, full_name, role in demos:
+        conn.execute(
+            "INSERT OR IGNORE INTO users (username, password_hash, full_name, role) VALUES (?,?,?,?)",
+            (username, generate_password_hash(password), full_name, role),
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
         )
     conn.commit()
     conn.close()
@@ -111,6 +143,7 @@ def init_db():
 
 def authenticate(username, password):
     conn = get_connection()
+<<<<<<< HEAD
     row = conn.execute(
         "SELECT * FROM users WHERE username = ?", (username,)
     ).fetchone()
@@ -386,11 +419,23 @@ def insert_ticket(
     resolution=None,
     resolution_json=None,
 ):
+=======
+    row = conn.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchone()
+    conn.close()
+    if row and check_password_hash(row["password_hash"], password):
+        return dict(row)
+    return None
+
+
+def insert_ticket(employee_name, email, title, description, department,
+                  category, severity, priority, confidence, status="Open"):
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     conn = get_connection()
     cur = conn.execute(
         """
         INSERT INTO tickets
             (employee_name, email, title, description, department,
+<<<<<<< HEAD
              category, severity, priority, confidence, status,
              resolution, resolution_json)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -409,6 +454,13 @@ def insert_ticket(
             resolution,
             resolution_json,
         ),
+=======
+             category, severity, priority, confidence, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (employee_name, email, title, description, department,
+         category, severity, priority, confidence, status),
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
     )
     conn.commit()
     ticket_id = cur.lastrowid
@@ -416,6 +468,7 @@ def insert_ticket(
     return ticket_id
 
 
+<<<<<<< HEAD
 def update_ticket_resolution(ticket_id, resolution_text, resolution_json):
     conn = get_connection()
     conn.execute(
@@ -439,6 +492,8 @@ def get_ticket(ticket_id):
     return dict(row) if row else None
 
 
+=======
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
 def get_all_tickets(limit=50):
     conn = get_connection()
     rows = conn.execute(
@@ -457,6 +512,7 @@ def get_stats():
     p1_count = conn.execute(
         "SELECT COUNT(*) AS c FROM tickets WHERE priority = 'P1'"
     ).fetchone()["c"]
+<<<<<<< HEAD
     resolved = conn.execute(
         "SELECT COUNT(*) AS c FROM tickets WHERE status = 'Resolved'"
     ).fetchone()["c"]
@@ -467,3 +523,7 @@ def get_stats():
         "p1": p1_count,
         "resolved": resolved,
     }
+=======
+    conn.close()
+    return {"total": total, "open": open_count, "p1": p1_count}
+>>>>>>> 885aade09bac205dbbb5b2df6b3bc3e36e3c8131
