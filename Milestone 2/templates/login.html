@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupportPilot — {% if mode == 'signup' %}Sign Up{% else %}Sign In{% endif %}</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="auth-body auth-light auth-split">
+  <div class="auth-light-bg">
+    <div class="light-orb lo-1"></div>
+    <div class="light-orb lo-2"></div>
+    <div class="light-orb lo-3"></div>
+    <div class="light-grid"></div>
+  </div>
+
+  <div class="auth-shell auth-shell-light auth-shell-split">
+    <aside class="auth-side">
+      <div class="auth-side-inner">
+        <div class="auth-side-brand auth-side-brand-top">
+          <div class="logo-3d logo-3d-side logo-live" id="sideLogo">
+            <span class="logo-live-glow"></span>
+            <span class="logo-live-ring"></span>
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="SupportPilot" width="72" height="72">
+          </div>
+          <div>
+            <div class="auth-side-title">SupportPilot</div>
+            <div class="auth-side-tag-light">AI Support Desk</div>
+          </div>
+        </div>
+        <h1 class="auth-side-welcome">Hello,<br>welcome!</h1>
+        <p class="auth-side-lead">Sign in to classify issues and generate clear, knowledge-based resolutions for your team.</p>
+      </div>
+    </aside>
+
+    <main class="auth-main">
+      <div class="auth-card auth-card-3d">
+        {% if mode == 'signup' %}
+        <div class="auth-tabs">
+          <a href="{{ url_for('login') }}" class="auth-tab">Sign In</a>
+          <a href="{{ url_for('signup') }}" class="auth-tab active">Sign Up</a>
+        </div>
+        {% endif %}
+
+        <div class="auth-card-body">
+          <h2 class="auth-heading">
+            {% if mode == 'signup' %}Create your account{% else %}Welcome back{% endif %}
+          </h2>
+          <p class="auth-sub">
+            {% if mode == 'signup' %}
+              Start resolving tickets with knowledge-backed AI.
+            {% else %}
+              Sign in to your SupportPilot workspace.
+            {% endif %}
+          </p>
+
+          {% if error %}
+          <div class="alert alert-danger py-2 small">{{ error }}</div>
+          {% endif %}
+          <div id="authError" class="alert alert-danger py-2 small d-none"></div>
+
+          <!-- One-click Google (no account picker) -->
+          <a href="{{ url_for('auth_google') }}" class="btn btn-google btn-3d" id="googleBtn">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span>Continue with Google</span>
+          </a>
+
+          <div class="auth-divider"><span>or continue with email</span></div>
+
+          {% if mode == 'signup' %}
+          <form method="POST" action="{{ url_for('signup') }}" id="authForm">
+            <div class="mb-3 field-float">
+              <label class="form-label">Full name</label>
+              <input type="text" name="full_name" class="form-control form-3d" placeholder="Alex Rivera" autocomplete="name">
+            </div>
+            <div class="mb-3 field-float">
+              <label class="form-label">Work email</label>
+              <input type="email" name="email" class="form-control form-3d" placeholder="you@company.com" required autofocus autocomplete="email">
+            </div>
+            <div class="mb-3 field-float">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control form-3d" placeholder="At least 6 characters" required minlength="6" autocomplete="new-password">
+            </div>
+            <div class="mb-4 field-float">
+              <label class="form-label">Confirm password</label>
+              <input type="password" name="confirm_password" class="form-control form-3d" placeholder="Repeat password" required minlength="6" autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-login btn-3d">
+              <span class="btn-text">Create account</span>
+            </button>
+          </form>
+          <p class="auth-switch">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+          {% else %}
+          <form method="POST" action="{{ url_for('login') }}" id="authForm">
+            <div class="mb-3 field-float">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control form-3d" placeholder="you@company.com" required autofocus autocomplete="email">
+            </div>
+            <div class="mb-4 field-float">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control form-3d" placeholder="Enter your password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-login btn-3d">
+              <span class="btn-text">Sign in</span>
+            </button>
+          </form>
+          <p class="auth-switch">New here? <a href="{{ url_for('signup') }}">Create an account</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('authForm')?.addEventListener('submit', function() {
+      const btn = this.querySelector('button[type=submit]');
+      if (btn) {
+        btn.style.transform = 'scale(0.98)';
+        const t = btn.querySelector('.btn-text');
+        if (t) t.textContent = 'Please wait…';
+      }
+    });
+
+    // Google button loading state
+    document.getElementById('googleBtn')?.addEventListener('click', function() {
+      this.classList.add('loading');
+      const span = this.querySelector('span');
+      if (span) span.textContent = 'Signing in…';
+    });
+
+    // Subtle 3D tilt on feature chips
+    document.querySelectorAll('[data-tilt]').forEach((el) => {
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        el.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg) translateY(-4px) scale(1.02)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = '';
+      });
+    });
+
+    // Card follows pointer slightly
+    const card = document.querySelector('.auth-card-3d');
+    if (card) {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(1200px) rotateY(${x * 5}deg) rotateX(${-y * 4}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    }
+
+  </script>
+</body>
+</html>
