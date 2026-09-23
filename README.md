@@ -75,6 +75,15 @@ supportpilot/
 - **RAG Retrieval Engine** — Employs TF-IDF and cosine similarity to search the knowledge base and surface the most relevant articles
 - **Context Augmentation & Generation** — Formats retrieved documents into a secure context window to prompt an LLM for precise, step-by-step troubleshooting with source citations
 
+
+ 🤖 **Milestone 3 (Weeks 5–6) — Multi-Agent Workflows & Integrations**
+- **Agent Orchestration Pipeline** — Coordinates specialized, single-purpose AI agents (Diagnosis, Retrieval, Resolution, Validation, Escalation) into a cohesive troubleshooting workflow
+- **Confidence Scoring Validation** — Dynamically evaluates resolution quality through a weighted formula combining category match rate, semantic search similarity, and step completeness
+- **Automated ITSM Routing (Jira Integration)** — Intercepts low-confidence resolutions (&lt; 70%) and automatically escalates them to a Jira board via REST API
+- **User Communication (Email Automation)** — Actively dispatches SMTP emails containing self-service guides when agents achieve an AUTO_RESOLVE status
+- **Interactive 3D Dashboard** — Provides a real-time, full-screen UI displaying agent telemetry, status pills, and integration health states using responsive vector SVGs
+
+
 </details>
 
 ---
