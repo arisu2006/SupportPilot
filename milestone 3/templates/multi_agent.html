@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SupportPilot — Multi-Agent Workflows</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+  <style>
+    body { background: #f4f6f9; }
+    .sidebar {
+      min-height: 100vh;
+      background: white;
+      padding: 25px;
+      box-shadow: 2px 0 8px rgba(0,0,0,.04);
+    }
+    .agent-card {
+      border-radius: 15px;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,.08);
+      height: 100%;
+    }
+    .agent-circle {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      font-weight: bold;
+      font-size: 1.4rem;
+    }
+    .result-box {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      min-height: 120px;
+    }
+    .nav-link-sp { color: #333; text-decoration: none; display: block; padding: 6px 0; }
+    .nav-link-sp:hover { color: #0d6efd; }
+    .nav-link-sp.active { font-weight: 700; color: #0d6efd; }
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <!-- SIDEBAR -->
+    <div class="col-md-2 sidebar">
+      <h4>🟦 SupportPilot</h4>
+      <hr>
+      <a class="nav-link-sp" href="/dashboard">▦ Dashboard</a>
+      <a class="nav-link-sp" href="/dashboard#tickets">🎫 Tickets</a>
+      <a class="nav-link-sp active" href="/multi-agent">🤖 AI Agents</a>
+      <a class="nav-link-sp" href="/dashboard#integrations">🔗 Integrations</a>
+      <a class="nav-link-sp" href="/dashboard">📊 Analytics</a>
+      <a class="nav-link-sp" href="/logout">⚙ Logout</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="col-md-10 p-4">
+      <div class="d-flex justify-content-between align-items-start">
+        <div>
+          <h2>Multi-Agent Workflows &amp; Integrations</h2>
+          <p class="text-muted mb-0">Collaborative AI agents and enterprise integrations</p>
+        </div>
+      </div>
+      <style>
+        .agent-node-card {
+          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          cursor: default;
+          border: 1px solid var(--border);
+        }
+        .agent-node-card:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: 0 20px 40px rgba(79, 70, 229, 0.12), 0 8px 16px rgba(15, 23, 42, 0.04);
+          border-color: rgba(79, 70, 229, 0.3);
+        }
+        .status-pill {
+          display: inline-flex; align-items: center; gap: 6px;
+          padding: 6px 14px; border-radius: 999px;
+          font-size: 0.75rem; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.05em;
+          box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+        }
+        .status-pill.active { background: rgba(16,185,129,0.12); color: #047857; }
+        .status-pill.standby { background: rgba(100,116,139,0.1); color: #475569; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.active { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.6); animation: pulse 2s infinite; }
+        .status-dot.standby { background: #94a3b8; }
+      </style>
+
+      <div class="row g-4 mt-1">
+        <!-- LEFT COLUMN -->
+        <div class="col-xl-8 col-lg-7">
+          <!-- AGENTS -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem;">
+            
+            <div class="card card-3d agent-node-card text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.2));color:#6366f1;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+              <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Diagnosis</div>
+              <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Classify category</div>
+              <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+            </div>
+
+            <div class="card card-3d agent-node-card text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.2));color:#22c55e;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div>
+              <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Retrieval</div>
+              <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">TF-IDF search</div>
+              <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+            </div>
+
+            <div class="card card-3d agent-node-card text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.2));color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
+              <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Resolution</div>
+              <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Step-by-step fix</div>
+              <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+            </div>
+
+            <div class="card card-3d agent-node-card text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(6,182,212,0.1), rgba(6,182,212,0.2));color:#06b6d4;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+              <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Validation</div>
+              <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Confidence scoring</div>
+              <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+            </div>
+
+            <div class="card card-3d agent-node-card text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+              <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.2));color:#ef4444;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></div>
+              <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Escalation</div>
+              <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Route to Jira</div>
+              <div class="status-pill standby"><div class="status-dot standby"></div>Standby</div>
+            </div>
+          </div>
+
+          <!-- INTEGRATIONS -->
+          <div class="row mt-4 g-4 mb-4">
+            <div class="col-md-6">
+              <div class="stat-card stat-unique dash-enter d-flex align-items-center gap-4 card-3d agent-node-card" style="padding: 28px 32px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); min-height: 130px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                <div class="stat-icon-wrap si-blue" style="border-radius: 18px; width: 72px; height: 72px; flex-shrink: 0; background: linear-gradient(145deg,#e0e7ff,#c7d2fe); color: #4338ca; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                <div style="flex:1">
+                  <div style="font-weight:800; font-size: 1.25rem; color:#1e293b; margin-bottom:6px; letter-spacing: -0.02em;">Jira Integration</div>
+                  <div class="text-muted" style="font-size: 0.95rem;">Creates issues on ESCALATE (&lt; 70%)</div>
+                </div>
+                <span class="badge bg-warning text-dark" id="jiraStatus" style="font-size: 0.85rem; padding: 8px 14px; border-radius: 8px;">Checking…</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="stat-card stat-unique dash-enter delay-1 d-flex align-items-center gap-4 card-3d agent-node-card" style="padding: 28px 32px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); min-height: 130px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                <div class="stat-icon-wrap si-green" style="border-radius: 18px; width: 72px; height: 72px; flex-shrink: 0; background: linear-gradient(145deg,#d1fae5,#a7f3d0); color: #047857; display: flex; align-items: center; justify-content: center; box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                <div style="flex:1">
+                  <div style="font-weight:800; font-size: 1.25rem; color:#1e293b; margin-bottom:6px; letter-spacing: -0.02em;">Email Automation</div>
+                  <div class="text-muted" style="font-size: 0.95rem;">Sends resolution on AUTO_RESOLVE</div>
+                </div>
+                <span class="badge bg-warning text-dark" id="emailStatus" style="font-size: 0.85rem; padding: 8px 14px; border-radius: 8px;">Checking…</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RESULT -->
+          <div class="agent-card mt-4">
+            <h4>Current Workflow Activity</h4>
+            <div id="output" class="result-box mt-3">Waiting for ticket...</div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-xl-4 col-lg-5">
+          <!-- TICKET FORM -->
+          <div class="card h-100" style="position: sticky; top: 90px; border-radius: 20px; box-shadow: var(--shadow-sm);">
+            <div class="card-header" style="font-weight:800; font-size: 1.05rem; padding: 1.25rem 1.5rem; background: transparent;">Process Ticket</div>
+            <div class="card-body" style="padding: 1.5rem;">
+              
+              <div class="mb-3">
+                <label class="form-label">Customer Name</label>
+                <input id="agentCustomerName" type="text" class="form-control"
+                  placeholder="e.g. Acme Corp or John Doe"
+                  value="{{ session.get('full_name', '') }}">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Department</label>
+                <select id="agentDepartment" class="form-select">
+                  <option value="IT Support">IT Support</option>
+                  <option value="Billing">Billing & Finance</option>
+                  <option value="HR">Human Resources</option>
+                  <option value="Sales">Sales</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email (for auto-resolve notification)</label>
+                <input id="email" type="email" class="form-control"
+                  value="{{ session.get('email', '') }}"
+                  placeholder="user@company.com">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">Describe your issue</label>
+                <textarea id="ticket" class="form-control" rows="4"
+                  placeholder="e.g. My VPN is not connecting to the company network."></textarea>
+              </div>
+              
+              <button onclick="processTicket()" class="btn btn-primary w-100" style="padding:12px; font-size: 1rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> Submit to Agents
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+async function processTicket() {
+  const ticket = document.getElementById("ticket").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const customerName = document.getElementById('agentCustomerName').value.trim();
+  const department = document.getElementById('agentDepartment').value;
+  const output = document.getElementById("output");
+
+  if (!ticket) {
+    output.innerHTML = "<span class='text-danger'>Please enter a ticket description.</span>";
+    return;
+  }
+
+  output.innerHTML = "AI agents are processing the ticket...";
+
+  try {
+    const response = await fetch("/api/multi-agent", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ ticket, email, customerName, department }),
+    });
+    const data = await response.json();
+
+    if (!data.success) {
+      output.innerHTML = data.message || "Request failed";
+      return;
+    }
+
+    const r = data.result;
+    const bannerBg = data.status === 'AUTO_RESOLVE' 
+        ? 'linear-gradient(135deg, #10b981, #059669)' 
+        : 'linear-gradient(135deg, #f59e0b, #d97706)';
+    const bannerIcon = data.status === 'AUTO_RESOLVE' ? '✨' : '⚠️';
+    
+    let html = '';
+
+    html += `
+    <div style="background: ${bannerBg}; color: white; border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(${data.status==='AUTO_RESOLVE'?'16,185,129':'245,158,11'},0.3); margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);">
+          ${bannerIcon}
+        </div>
+        <div>
+          <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; font-weight: 700;">Final Decision</div>
+          <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">${data.status.replace('_', ' ')}</div>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; font-weight: 700;">Confidence</div>
+        <div style="font-size: 1.8rem; font-weight: 800;">${data.confidence}%</div>
+      </div>
+    </div>`;
+
+    html += '<h6 style="font-weight: 800; color: #1e293b; margin-bottom: 16px; font-size: 1.05rem; letter-spacing: -0.01em;">Agent Execution Trace</h6>';
+
+    html += '<div class="row g-3 mb-3">';
+    
+    html += `
+    <div class="col-md-6">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); height: 100%;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(99,102,241,0.1); color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔍</div>
+          <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Diagnosis Agent</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Category</span>
+            <span style="font-weight: 700; color: #0f172a;">${r.diagnosis.category}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Base Confidence</span>
+            <span style="font-weight: 800; color: #6366f1; background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 8px;">${(r.diagnosis.confidence * 100).toFixed(0)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+    html += `
+    <div class="col-md-6">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); height: 100%;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(34,197,94,0.1); color: #22c55e; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔎</div>
+          <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Retrieval Agent</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Article</span>
+            <span style="font-weight: 700; color: #0f172a;">${r.retrieval.article.title}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Similarity Score</span>
+            <span style="font-weight: 800; color: #22c55e; background: rgba(34,197,94,0.1); padding: 4px 10px; border-radius: 8px;">${(r.retrieval.similarity * 100).toFixed(1)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    html += '</div>';
+
+    html += `
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(245,158,11,0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔧</div>
+        <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Resolution Agent</div>
+      </div>
+      <div style="background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; color: #334155; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+        ${r.resolution.response}
+      </div>
+      <div style="font-weight: 700; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px;">Step-by-Step Instructions</div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">`;
+      
+    r.resolution.steps.forEach((step, idx) => {
+      html += `
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+          <div style="width: 26px; height: 26px; border-radius: 8px; background: #e2e8f0; color: #475569; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">${idx + 1}</div>
+          <div style="color: #1e293b; font-weight: 500; font-size: 0.95rem; line-height: 1.5; padding-top: 2px;">${step}</div>
+        </div>`;
+    });
+    html += '</div></div>';
+
+    html += `
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(6,182,212,0.1); color: #06b6d4; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">✓</div>
+        <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Validation Agent</div>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px;">
+        <div>
+          <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Computed Confidence</div>
+          <div style="font-size: 1.5rem; font-weight: 800; color: #0f172a;">${data.confidence}%</div>
+        </div>
+        <div style="background: rgba(${data.status==='AUTO_RESOLVE'?'16,185,129':'245,158,11'},0.1); color: ${data.status==='AUTO_RESOLVE'?'#059669':'#d97706'}; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.85rem;">
+          ${data.status}
+        </div>
+      </div>
+      
+      <div style="height: 12px; border-radius: 6px; background: #f1f5f9; overflow: visible; position: relative;">
+        <div style="height: 100%; background: ${bannerBg}; width: ${Math.min(data.confidence, 100)}%; border-radius: 6px; position: relative;">
+           <div style="position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 18px; height: 18px; background: white; border: 4px solid ${data.status==='AUTO_RESOLVE'?'#10b981':'#f59e0b'}; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1);"></div>
+        </div>
+      </div>
+      <div style="position: relative; height: 20px; margin-top: 8px;">
+        <div style="position: absolute; left: 0; font-size: 0.75rem; color: #94a3b8; font-weight: 700;">0%</div>
+        <div style="position: absolute; left: 70%; transform: translateX(-50%); font-size: 0.75rem; color: #f59e0b; font-weight: 800; display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 2px; height: 8px; background: #f59e0b; margin-bottom: 2px; margin-top: -12px;"></div>
+          70% Threshold
+        </div>
+        <div style="position: absolute; right: 0; font-size: 0.75rem; color: #94a3b8; font-weight: 700;">100%</div>
+      </div>
+    </div>`;
+
+    if (data.jira) {
+      if (data.jira.success) {
+        html += `<div style="background: linear-gradient(to right, #eff6ff, #ffffff); border: 1px solid #dbeafe; border-left: 6px solid #3b82f6; border-radius: 12px; padding: 20px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(59,130,246,0.05);">
+          <div style="font-weight: 800; color: #1e40af; margin-bottom: 12px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">🔗</span> Jira Ticket Created
+          </div>
+          <div class="row g-3" style="font-size: 0.9rem; color: #1e3a8a;">
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Ticket ID</div>
+              <span class="badge bg-primary" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">${data.jira.ticket_id}</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Status</div>
+              <span class="badge bg-info text-dark" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">In Progress</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Assignee</div>
+              <span style="font-weight: 600;">IT Escalations Team</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Priority</div>
+              <span class="badge bg-danger" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">High</span>
+            </div>
+          </div>
+        </div>`;
+      } else {
+        html += `<div style="background: #fefce8; border: 1px solid #fef08a; border-left: 6px solid #eab308; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; color: #854d0e;">
+          <strong style="color: #713f12;">🔗 Jira:</strong> ${data.jira.message || 'Escalation queued'}
+          ${data.jira.ticket_id ? ' — ID: <code style="background:rgba(234,179,8,0.2); padding:2px 6px; border-radius:4px; font-weight:bold;">' + data.jira.ticket_id + '</code>' : ''}
+        </div>`;
+      }
+    }
+    if (data.email) {
+      if (data.email.success) {
+        html += `<div style="background: linear-gradient(to right, #f0fdf4, #ffffff); border: 1px solid #dcfce3; border-left: 6px solid #22c55e; border-radius: 12px; padding: 20px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(34,197,94,0.05);">
+          <div style="font-weight: 800; color: #166534; margin-bottom: 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">📧</span> Email Notification Sent
+          </div>
+          <div style="font-size: 0.95rem; color: #15803d; font-weight: 500;">
+            Automated resolution steps sent successfully to <strong style="color: #14532d; background: rgba(34,197,94,0.15); padding: 2px 8px; border-radius: 6px;">${email || 'user'}</strong>.
+          </div>
+        </div>`;
+      } else {
+        html += `<div style="background: #f0f9ff; border: 1px solid #bae6fd; border-left: 6px solid #0ea5e9; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; color: #0369a1;">
+          <strong style="color: #0c4a6e;">📧 Email:</strong> ${data.email.message || 'Notification processed'}
+        </div>`;
+      }
+    }
+
+    output.innerHTML = html;
+  } catch (err) {
+    output.innerHTML = "<span class='text-danger'>Error: " + err.message + "</span>";
+  }
+}
+
+// Fetch integration status on load
+fetch("/api/agents/status", { credentials: "same-origin" })
+  .then(r => r.json())
+  .then(data => {
+    const jira = document.getElementById("jiraStatus");
+    const email = document.getElementById("emailStatus");
+    if (data.integrations) {
+      jira.textContent = data.integrations.jira_configured ? "Configured" : "Simulated Mode";
+      jira.className = "badge ms-auto " + (data.integrations.jira_configured ? "bg-success" : "bg-warning text-dark");
+      email.textContent = data.integrations.email_configured ? "Configured" : "Simulated Mode";
+      email.className = "badge ms-auto " + (data.integrations.email_configured ? "bg-success" : "bg-warning text-dark");
+    }
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>

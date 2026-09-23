@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SupportPilot — AI Resolution Agent</title>
+<link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo.svg') }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+</head>
+<body class="app-body light-theme">
+  <div class="bg-mesh"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo-3d">
+          <img src="{{ url_for('static', filename='logo.svg') }}" alt="SupportPilot" width="36" height="36">
+        </div>
+        <div>
+          <div class="sidebar-title">SupportPilot</div>
+          <div class="sidebar-sub">AI Support Desk</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sideNav">
+        <button type="button" class="nav-item active" data-panel="panel-dashboard">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg></span><span>Home</span>
+          <span class="nav-glow"></span>
+        </button>
+        <button type="button" class="nav-item" data-panel="panel-submit">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span><span>Submit Ticket</span>
+          <span class="nav-glow"></span>
+        </button>
+        <button type="button" class="nav-item" data-panel="panel-tickets">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"></path><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"></path></svg></span><span>Tickets</span>
+          <span class="nav-glow"></span>
+        </button>
+        <button type="button" class="nav-item" data-panel="panel-agents">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg></span><span>AI Agents</span>
+          <span class="nav-glow"></span>
+        </button>
+        <button type="button" class="nav-item" data-panel="panel-account">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span><span>Account</span>
+          <span class="nav-glow"></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-chip-v2">
+          <div class="user-avatar">
+            {% if user.avatar_url %}
+            <img src="{{ user.avatar_url }}" alt="" width="36" height="36">
+            {% else %}
+            {% set _n = (user.full_name or user.username or 'U') %}{{ _n[0]|upper }}
+            {% endif %}
+          </div>
+          <div class="user-meta">
+            <div class="user-name">{{ user.full_name or user.username }}</div>
+            <div class="user-mail">{{ user.email or '' }}</div>
+          </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-secondary w-100 mt-2 signout-btn">Sign out</a>
+      </div>
+    </aside>
+
+    <div class="main-wrap">
+      <header class="topbar">
+        <button type="button" class="menu-toggle d-lg-none" id="menuToggle" aria-label="Menu">☰</button>
+        <div class="topbar-title" id="topbarTitle">Home</div>
+        <div class="topbar-actions">
+          <span class="live-pill"><span class="live-dot"></span> Live</span>
+        </div>
+      </header>
+
+      <div class="main-content">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success alert-dismissible fade show glass-alert" role="alert">
+              {{ messages[0] }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <!-- HOME -->
+        <section class="panel active" id="panel-dashboard">
+          <div class="home-banner home-banner-full dash-enter">
+            <div class="home-banner-text">
+              <div class="home-kicker">SupportPilot</div>
+              <h1 class="home-title">Hi {{ user.full_name or user.username }}</h1>
+              <p class="home-sub">Classify issues, search the knowledge base, and get a clear resolution — start with a new ticket anytime.</p>
+            </div>
+            <button type="button" class="home-quick-create home-quick-create-lg" data-goto="panel-submit" title="Create ticket">
+              <div class="hqc-logo">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="" width="48" height="48">
+              </div>
+              <div class="hqc-plus">＋</div>
+              <div class="hqc-label">New ticket</div>
+            </button>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter">
+                <div class="stat-icon-wrap si-blue"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"></path><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"></path></svg></div>
+                <div>
+                  <div class="stat-label">Tickets</div>
+                  <div class="stat-value" id="statTotal">{{ stats.total }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter delay-1">
+                <div class="stat-icon-wrap si-amber"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <div>
+                  <div class="stat-label">Open</div>
+                  <div class="stat-value" id="statOpen">{{ stats.open }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card stat-unique card-3d dash-enter delay-2">
+                <div class="stat-icon-wrap si-green"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                <div>
+                  <div class="stat-label">Resolved</div>
+                  <div class="stat-value" id="statResolved">{{ stats.resolved }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pipeline-section dash-enter">
+            <div class="pipeline-header">
+              <div>
+                <div class="pipeline-kicker">Resolution pipeline</div>
+                <h2 class="pipeline-title">How it works</h2>
+              </div>
+            </div>
+
+            <div class="pipeline-track" id="pipelineTrack">
+              <div class="pipeline-line"><div class="pipeline-line-fill" id="pipelineFill"></div></div>
+
+              <button type="button" class="pipe-step" data-step="0">
+                <div class="pipe-node"><span>1</span></div>
+                <div class="pipe-card">
+                  <div class="pipe-name">Analyze</div>
+                  <p class="pipe-desc">The ticket title and description are read. Keywords are extracted and a focused search query is formed for knowledge retrieval.</p>
+                </div>
+              </button>
+
+              <button type="button" class="pipe-step" data-step="1">
+                <div class="pipe-node"><span>2</span></div>
+                <div class="pipe-card">
+                  <div class="pipe-name">Retrieve</div>
+                  <p class="pipe-desc">TF-IDF ranking selects the most relevant knowledge-base articles and scores each match by similarity to the query.</p>
+                </div>
+              </button>
+
+              <button type="button" class="pipe-step" data-step="2">
+                <div class="pipe-node"><span>3</span></div>
+                <div class="pipe-card">
+                  <div class="pipe-name">Augment</div>
+                  <p class="pipe-desc">Retrieved articles are assembled into a grounded context block so the resolution is based on enterprise knowledge—not free-form invention.</p>
+                </div>
+              </button>
+
+              <button type="button" class="pipe-step" data-step="3">
+                <div class="pipe-node"><span>4</span></div>
+                <div class="pipe-card">
+                  <div class="pipe-name">Resolve</div>
+                  <p class="pipe-desc">Numbered troubleshooting steps are generated with citations back to each source article for agent verification.</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- SUBMIT -->
+        <section class="panel" id="panel-submit">
+          <div class="card dash-enter mb-3">
+            <div class="card-header">Submit Support Ticket</div>
+            <div class="card-body">
+              <form id="ticketForm" onsubmit="return false;">
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Employee Name</label>
+                    <input type="text" class="form-control form-3d" id="tEmployee" name="employee_name" value="{{ user.full_name or '' }}">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control form-3d" id="tEmail" name="email" value="{{ user.email or '' }}" placeholder="you@company.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control form-3d" id="tTitle" name="title" placeholder="e.g. VPN Connection Failing on Corporate Network">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Department</label>
+                    <select class="form-select form-3d" id="tDept" name="department">
+                      <option value="" disabled selected>Select department</option>
+                      <option value="IT">IT</option>
+                      <option value="Finance">Finance</option>
+                      <option value="Sales">Sales</option>
+                      <option value="HR">HR</option>
+                      <option value="Operations">Operations</option>
+                      <option value="Marketing">Marketing</option>
+                      <option value="Customer Support">Customer Support</option>
+                      <option value="Engineering">Engineering</option>
+                      <option value="Legal">Legal</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Description *</label>
+                    <textarea class="form-control form-3d" id="tDesc" name="description" rows="4" required placeholder="Describe the issue in detail…"></textarea>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Business Impact</label>
+                    <select class="form-select form-3d" id="tImpact" name="business_impact">
+                      <option value="Low">Low</option>
+                      <option value="Medium" selected>Medium</option>
+                      <option value="High">High</option>
+                    </select>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary w-100 mt-3 btn-3d" id="submitTicketBtn">
+                  <span class="btn-label">Submit Ticket — Classify &amp; Resolve</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Results: analysis layout matching Milestone design -->
+          <div id="ticketResult" class="d-none">
+            <div class="analysis-wrap">
+              <div class="analysis-left">
+                <div class="card analysis-card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Current ticket</span>
+                    <span class="badge bg-warning bg-opacity-15 text-warning" id="trStatusBadge">Processing</span>
+                  </div>
+                  <div class="card-body">
+                    <div class="an-ticket-id" id="trTicketId">#—</div>
+                    <h3 class="an-title" id="trTitle">—</h3>
+                    <p class="an-desc" id="trDesc">—</p>
+                    <div class="an-meta">
+                      <span class="badge bg-secondary bg-opacity-10 text-secondary" id="trCat">—</span>
+                      <span class="badge sev-high" id="trSev">—</span>
+                      <span class="badge pri-p1" id="trPri">—</span>
+                    </div>
+
+                    <div class="an-search mt-3">
+                      <span class="an-search-ico">🔍</span>
+                      <span id="ragQuery">—</span>
+                    </div>
+
+                    <div class="an-guides mt-3" id="retrievedDocs"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="analysis-right">
+                <div class="card analysis-card mb-3">
+                  <div class="card-header">AI resolution</div>
+                  <div class="card-body">
+                    <div class="an-wf-title">Progress</div>
+                    <div id="workflowList" class="an-workflow"></div>
+
+                    <div class="an-solution-box mt-3">
+                      <div class="an-solution-label">Your solution</div>
+                      <div id="resolutionBody"></div>
+                    </div>
+
+                    <div class="an-metrics mt-3">
+                      <div class="an-metric">
+                        <div class="an-metric-val" id="trConf">—</div>
+                        <div class="an-metric-label">Match</div>
+                      </div>
+                      <div class="an-metric">
+                        <div class="an-metric-val" id="ragDocCount">—</div>
+                        <div class="an-metric-label">Guides</div>
+                      </div>
+                      <div class="an-metric">
+                        <div class="an-metric-val" id="ragLatencyVal">—</div>
+                        <div class="an-metric-label">Time</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="button" class="btn btn-primary w-100 btn-3d" id="doneTicketBtn">Done — back to Home</button>
+              </div>
+            </div>
+            <!-- hidden fields kept for JS compatibility -->
+            <div class="d-none">
+              <div id="ragKeywords"></div>
+              <pre id="ragContext"></pre>
+              <span id="resStatus"></span>
+            </div>
+          </div>
+        </section>
+
+        <!-- TICKETS -->
+        <section class="panel" id="panel-tickets">
+          <div class="card card-3d dash-enter">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span>Ticket track &amp; analysis</span>
+              <span class="badge bg-primary bg-opacity-10 text-primary">{{ stats.total }} total</span>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover mb-0 align-middle premium-table">
+                <thead>
+                  <tr>
+                    <th>Ticket</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="ticketsBody">
+                  {% for t in tickets %}
+                  <tr class="ticket-row">
+                    <td>
+                      <div class="fw-bold text-primary">#{{ t.ticket_id }}</div>
+                      <div class="small">{{ t.title or (t.description[:40] if t.description else '—') }}</div>
+                    </td>
+                    <td><span class="badge bg-secondary bg-opacity-10 text-secondary">{{ t.category or '—' }}</span></td>
+                    <td><span class="badge pri-{{ (t.priority or 'p4')|lower }}">{{ t.priority or '—' }}</span></td>
+                    <td>
+                      {% if t.status == 'Resolved' %}
+                        <span class="badge bg-success bg-opacity-15 text-success">RESOLVED</span>
+                      {% else %}
+                        <span class="badge bg-warning bg-opacity-15 text-warning">{{ (t.status or 'OPEN')|upper }}</span>
+                      {% endif %}
+                    </td>
+                    <td class="text-end">
+                      <button type="button" class="btn btn-sm btn-outline-primary view-res" data-id="{{ t.ticket_id }}">View →</button>
+                    </td>
+                  </tr>
+                  {% else %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted py-5">No tickets yet.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+<!-- AI AGENTS (MILESTONE 3) -->
+        <section class="panel" id="panel-agents">
+
+          <!-- HEADER -->
+          <div class="d-flex justify-content-between align-items-start mb-4 dash-enter">
+            <div>
+              <div class="home-kicker">SUPPORTPILOT</div>
+              <h2 style="font-weight:700;margin:0">Multi-Agent Workflows & Integrations</h2>
+              <p class="text-muted mb-0">Collaborative AI agents diagnose, resolve, validate, and escalate tickets automatically.</p>
+            </div>
+          </div>
+
+          <!-- 5 AGENT CARDS -->
+          <style>
+            .agent-node-card {
+              transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+              cursor: default;
+              border: 1px solid var(--border);
+            }
+            .agent-node-card:hover {
+              transform: translateY(-8px) scale(1.02);
+              box-shadow: 0 20px 40px rgba(79, 70, 229, 0.12), 0 8px 16px rgba(15, 23, 42, 0.04);
+              border-color: rgba(79, 70, 229, 0.3);
+            }
+            .status-pill {
+              display: inline-flex; align-items: center; gap: 6px;
+              padding: 6px 14px; border-radius: 999px;
+              font-size: 0.75rem; font-weight: 700;
+              text-transform: uppercase; letter-spacing: 0.05em;
+              box-shadow: inset 0 1px 1px rgba(255,255,255,0.4);
+            }
+            .status-pill.active { background: rgba(16,185,129,0.12); color: #047857; }
+            .status-pill.standby { background: rgba(100,116,139,0.1); color: #475569; }
+            .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+            .status-dot.active { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.6); animation: pulse 2s infinite; }
+            .status-dot.standby { background: #94a3b8; }
+          </style>
+          
+          <div class="row g-4">
+            <!-- LEFT COLUMN: AGENTS & INTEGRATIONS -->
+            <div class="col-xl-8 col-lg-7">
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                
+                <div class="card card-3d agent-node-card dash-enter text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+                  <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(99,102,241,0.1), rgba(99,102,241,0.2));color:#6366f1;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
+                  <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Diagnosis</div>
+                  <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Classify category</div>
+                  <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+                </div>
+
+                <div class="card card-3d agent-node-card dash-enter delay-1 text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+                  <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(34,197,94,0.1), rgba(34,197,94,0.2));color:#22c55e;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg></div>
+                  <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Retrieval</div>
+                  <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">TF-IDF search</div>
+                  <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+                </div>
+
+                <div class="card card-3d agent-node-card dash-enter delay-2 text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+                  <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(245,158,11,0.2));color:#f59e0b;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg></div>
+                  <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Resolution</div>
+                  <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Step-by-step fix</div>
+                  <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+                </div>
+
+                <div class="card card-3d agent-node-card dash-enter delay-3 text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+                  <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(6,182,212,0.1), rgba(6,182,212,0.2));color:#06b6d4;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+                  <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Validation</div>
+                  <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Confidence scoring</div>
+                  <div class="status-pill active"><div class="status-dot active"></div>Active</div>
+                </div>
+
+                <div class="card card-3d agent-node-card dash-enter delay-4 text-center" style="padding: 24px 16px; border-radius: 16px; display: flex; flex-direction: column; align-items: center;">
+                  <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg, rgba(239,68,68,0.1), rgba(239,68,68,0.2));color:#ef4444;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow: inset 0 2px 4px rgba(255,255,255,0.6)"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></div>
+                  <div style="font-weight:800;font-size:1.05rem;color:var(--text);margin-bottom:4px">Escalation</div>
+                  <div class="text-muted" style="font-size:.85rem;margin-bottom:18px;flex-grow:1">Route to Jira</div>
+                  <div class="status-pill standby"><div class="status-dot standby"></div>Standby</div>
+                </div>
+              </div>
+
+              <!-- INTEGRATIONS STATUS -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <div class="stat-card stat-unique dash-enter d-flex align-items-center gap-4 card-3d agent-node-card" style="padding: 28px 32px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); min-height: 130px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                    <div class="stat-icon-wrap si-blue" style="border-radius: 18px; width: 72px; height: 72px; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></div>
+                    <div style="flex:1">
+                      <div style="font-weight:800; font-size: 1.25rem; color:#1e293b; margin-bottom:6px; letter-spacing: -0.02em;">Jira Integration</div>
+                      <div class="text-muted" style="font-size: 0.95rem;">Creates issues on ESCALATE (&lt; 70%)</div>
+                    </div>
+                    <span class="badge bg-warning text-dark" id="agentJiraStatus" style="font-size: 0.85rem; padding: 8px 14px; border-radius: 8px;">Checking…</span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="stat-card stat-unique dash-enter delay-1 d-flex align-items-center gap-4 card-3d agent-node-card" style="padding: 28px 32px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); min-height: 130px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;">
+                    <div class="stat-icon-wrap si-green" style="border-radius: 18px; width: 72px; height: 72px; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(255,255,255,0.6);"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                    <div style="flex:1">
+                      <div style="font-weight:800; font-size: 1.25rem; color:#1e293b; margin-bottom:6px; letter-spacing: -0.02em;">Email Automation</div>
+                      <div class="text-muted" style="font-size: 0.95rem;">Sends resolution on AUTO_RESOLVE</div>
+                    </div>
+                    <span class="badge bg-warning text-dark" id="agentEmailStatus" style="font-size: 0.85rem; padding: 8px 14px; border-radius: 8px;">Checking…</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- RESULTS (Moved to left column) -->
+              <div class="card dash-enter mt-4" id="agentResultCard" style="display:none; border-radius: 20px; box-shadow: var(--shadow-sm);">
+                <div class="card-header" style="font-weight:800; font-size:1.05rem; background:transparent; padding:1.25rem 1.5rem; border-bottom: 1px solid var(--border);">Agent Pipeline Results</div>
+                <div class="card-body" id="agentOutput" style="font-size:.9rem; padding: 1.5rem;"></div>
+              </div>
+            </div>
+
+            <!-- RIGHT COLUMN: PROCESS TICKET FORM -->
+            <div class="col-xl-4 col-lg-5">
+              <div class="card dash-enter h-100" style="position: sticky; top: 90px; border-radius: 20px; box-shadow: var(--shadow-sm);">
+                <div class="card-header" style="font-weight:800; font-size: 1.05rem; padding: 1.25rem 1.5rem; background: transparent;">Process Ticket</div>
+                <div class="card-body" style="padding: 1.5rem;">
+                  
+                  <div class="mb-3">
+                    <label class="form-label">Customer Name</label>
+                    <input id="agentCustomerName" type="text" class="form-control"
+                      placeholder="e.g. Acme Corp or John Doe"
+                      value="{{ user.full_name or '' }}">
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <select id="agentDepartment" class="form-select">
+                      <option value="IT Support">IT Support</option>
+                      <option value="Billing">Billing & Finance</option>
+                      <option value="HR">Human Resources</option>
+                      <option value="Sales">Sales</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">Email (for auto-resolve notification)</label>
+                    <input id="agentEmail" type="email" class="form-control"
+                      value="{{ user.email or '' }}"
+                      placeholder="user@company.com">
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="form-label">Describe your issue</label>
+                    <textarea id="agentTicket" class="form-control" rows="4"
+                      placeholder="e.g. My VPN is not connecting to the company network."></textarea>
+                  </div>
+                  
+                  <button onclick="runAgentPipeline()" class="btn btn-primary w-100" style="padding:12px; font-size: 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-1"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg> Submit to Agents
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+<!-- ACCOUNT -->
+        <section class="panel" id="panel-account">
+          <div class="account-hero dash-enter">
+            <div class="account-avatar-lg">
+              {% if user.avatar_url %}
+              <img src="{{ user.avatar_url }}" alt="" width="72" height="72">
+              {% else %}
+              {% set _n = (user.full_name or user.username or 'U') %}{{ _n[0]|upper }}
+              {% endif %}
+            </div>
+            <div class="account-hero-main">
+              <h2 class="account-name">{{ user.full_name or user.username }}</h2>
+              <p class="account-email">{{ user.email or 'No email on file' }}</p>
+              <div class="account-badges">
+                <span class="ab-pill">{{ user.role or 'employee' }}</span>
+                <span class="ab-pill ab-provider">{{ user.auth_provider or 'password' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="stat-card stat-unique dash-enter">
+                <div class="stat-icon-wrap si-blue">🔑</div>
+                <div>
+                  <div class="stat-label">Logins</div>
+                  <div class="stat-value">{{ account.login_count if account else 0 }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="stat-card stat-unique dash-enter delay-1">
+                <div class="stat-icon-wrap si-green">🎫</div>
+                <div>
+                  <div class="stat-label">Your tickets</div>
+                  <div class="stat-value">{{ account.ticket_count if account else 0 }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card dash-enter">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span style="font-weight: 800;">Recent Login Activity</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table premium-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Date / Time</th>
+                      <th>Method</th>
+                      <th>IP Address</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for login in login_history %}
+                    <tr class="ticket-row">
+                      <td style="font-size: 0.9rem; font-weight: 500; color: var(--text);">
+                        {{ login.created_at }}
+                      </td>
+                      <td>
+                        <span class="badge" style="background: rgba(99,102,241,0.1); color: #4f46e5;">{{ login.auth_provider | upper }}</span>
+                      </td>
+                      <td class="text-muted" style="font-size: 0.85rem; font-family: monospace;">
+                        {{ login.ip_address }}
+                      </td>
+                      <td>
+                        {% if login.success %}
+                        <span class="badge bg-success bg-opacity-10 text-success"><span class="status-dot active me-1" style="display:inline-block; animation:none;"></span> Success</span>
+                        {% else %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger">Failed</span>
+                        {% endif %}
+                      </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                      <td colspan="4" class="text-center text-muted py-5">
+                        No recent logins found.
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="resModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content glass-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Stored AI Resolution</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="resModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+(function() {
+  const titles = {
+    'panel-dashboard': 'Home',
+    'panel-submit': 'Submit Ticket',
+    'panel-tickets': 'Tickets',
+    'panel-agents': 'AI Agents',
+    'panel-account': 'Account'
+  };
+
+  function showPanel(id) {
+    // Close all panels, open only the selected one
+    document.querySelectorAll('.panel').forEach(p => {
+      p.classList.remove('active');
+      p.style.animation = '';
+    });
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const panel = document.getElementById(id);
+    if (panel) {
+      panel.classList.add('active');
+      void panel.offsetWidth; // restart animation
+      panel.style.animation = 'panelIn 0.35s cubic-bezier(0.22,1,0.36,1) forwards';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-item[data-panel="'+id+'"]').forEach(n => n.classList.add('active'));
+    const titleEl = document.getElementById('topbarTitle');
+    if (titleEl) titleEl.textContent = titles[id] || 'Home';
+    document.getElementById('sidebar')?.classList.remove('open');
+    history.replaceState(null, '', '#' + id.replace('panel-', ''));
+  }
+
+  document.querySelectorAll('.nav-item[data-panel]').forEach(btn => {
+    btn.addEventListener('click', () => showPanel(btn.getAttribute('data-panel')));
+  });
+  document.querySelectorAll('[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => showPanel(btn.getAttribute('data-goto')));
+  });
+  document.getElementById('menuToggle')?.addEventListener('click', () => {
+    document.getElementById('sidebar')?.classList.toggle('open');
+  });
+
+  const hash = (location.hash || '').replace('#', '');
+  const map = {
+    dashboard: 'panel-dashboard', submit: 'panel-submit',
+    tickets: 'panel-tickets', agents: 'panel-agents',
+    account: 'panel-account'
+  };
+  if (hash && map[hash.split('&')[0]]) showPanel(map[hash.split('&')[0]]);
+
+
+  function animateCount(el, end) {
+    if (!el) return;
+    const n = parseInt(end, 10) || 0;
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(n / 24) || 1);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, n);
+      el.textContent = cur;
+      if (cur >= n) clearInterval(t);
+    }, 28);
+  }
+  animateCount(document.getElementById('statTotal'), {{ stats.total }});
+  animateCount(document.getElementById('statOpen'), {{ stats.open }});
+  animateCount(document.getElementById('statResolved'), {{ stats.resolved }});
+
+  // 3D tilt on interactive cards
+  document.querySelectorAll('.card-3d').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = `perspective(900px) rotateY(${x * 6}deg) rotateX(${-y * 5}deg) translateY(-2px)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = '';
+    });
+  });
+
+  // Nav item micro-motion
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      btn.style.transform = `translateX(${x * 4}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+
+
+
+
+  // Submit ticket in-place: classify + full RAG in same tab
+  document.getElementById('submitTicketBtn')?.addEventListener('click', async () => {
+    const description = document.getElementById('tDesc')?.value.trim();
+    if (!description) { alert('Please describe the issue.'); return; }
+
+    const btn = document.getElementById('submitTicketBtn');
+    const label = btn.querySelector('.btn-label');
+    btn.disabled = true;
+    if (label) label.textContent = 'Processing…';
+    document.getElementById('ticketResult')?.classList.add('d-none');
+
+    const body = {
+      employee_name: document.getElementById('tEmployee')?.value || '',
+      email: document.getElementById('tEmail')?.value || '',
+      title: document.getElementById('tTitle')?.value || '',
+      department: document.getElementById('tDept')?.value || '',
+      description,
+      business_impact: document.getElementById('tImpact')?.value || 'Medium',
+      run_rag: true
+    };
+
+    try {
+      const res = await fetch('/api/ticket', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(body)
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submit failed');
+      showTicketResult(data);
+      refreshTicketsTable();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    } finally {
+      btn.disabled = false;
+      if (label) label.textContent = 'Submit Ticket — Classify & Resolve';
+    }
+  });
+
+  function showTicketResult(data) {
+    const box = document.getElementById('ticketResult');
+    if (!box) return;
+    box.classList.remove('d-none');
+    const formCard = document.querySelector('#panel-submit > .card');
+    if (formCard) formCard.classList.add('d-none');
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    const rag = data.rag || {};
+    const a = rag.analysis || {};
+    const r = rag.resolution || {};
+    const docs = rag.retrieved_documents || [];
+    const wf = rag.workflow || {};
+
+    document.getElementById('trTicketId').textContent = '#' + (data.ticket_id || '—');
+    document.getElementById('trTitle').textContent = data.title || (data.description || '').slice(0, 60) || 'Support ticket';
+    document.getElementById('trDesc').textContent = data.description || '—';
+    document.getElementById('trCat').textContent = data.category || '—';
+    document.getElementById('trSev').textContent = data.severity || '—';
+    document.getElementById('trPri').textContent = data.priority || '—';
+    document.getElementById('trStatusBadge').textContent = r.status || data.status || 'Resolved';
+
+    document.getElementById('ragQuery').textContent = a.query || data.title || '—';
+
+    // Progress — simple names matching analysis design
+    const order = [
+      ['ticket_analysis', '1', 'Reading your ticket'],
+      ['knowledge_retrieval', '2', 'Finding helpful guides'],
+      ['context_augmentation', '3', 'Preparing the fix'],
+      ['response_generation', '4', 'Your solution']
+    ];
+    document.getElementById('workflowList').innerHTML = order.map(([k, num, label]) => {
+      const done = wf[k] === 'completed' || (k === 'response_generation' && (wf.resolution_generation === 'completed' || wf.response_generation === 'completed' || (r.steps && r.steps.length)));
+      return `<div class="an-wf-row ${done ? 'done' : ''}">
+        <div class="an-wf-num">${num}</div>
+        <div class="an-wf-label">${label}</div>
+        <div class="an-wf-state">${done ? '✓ Done' : '…'}</div>
+      </div>`;
+    }).join('');
+
+    // Guides (left column)
+    document.getElementById('retrievedDocs').innerHTML = docs.length
+      ? docs.map(d => {
+          const pct = ((d.score || 0) * 100).toFixed(0);
+          return `<div class="an-guide">
+            <div class="d-flex justify-content-between gap-2">
+              <div>
+                <div class="an-guide-title">${d.title || d.id}</div>
+                <div class="an-guide-snippet">${(d.content || '').trim().slice(0, 140)}${(d.content || '').length > 140 ? '…' : ''}</div>
+                <div class="an-guide-meta">${d.category || 'Knowledge base'}</div>
+              </div>
+              <div class="an-guide-score">${pct}% match</div>
+            </div>
+          </div>`;
+        }).join('')
+      : '<p class="text-muted small mb-0">No matching guides found.</p>';
+
+    document.getElementById('ragDocCount').textContent = String(docs.length || 0);
+    document.getElementById('trConf').textContent = (data.confidence != null ? data.confidence + '%' : (docs[0] ? Math.round((docs[0].score || 0) * 100) + '%' : '—'));
+    document.getElementById('ragLatencyVal').textContent = rag.latency_ms != null ? (rag.latency_ms / 1000).toFixed(1) + 's' : '—';
+
+    // Solution steps
+    let html = '';
+    if (r.steps && r.steps.length) {
+      html = '<ul class="an-steps">' + r.steps.map(s => {
+        return `<li>${s.text || s}</li>`;
+      }).join('') + '</ul>';
+    } else {
+      html = `<p class="mb-0">${r.full_text || 'No solution generated yet.'}</p>`;
+    }
+    document.getElementById('resolutionBody').innerHTML = html;
+
+    // compat hidden
+    const kws = a.keywords || [];
+    const kwEl = document.getElementById('ragKeywords');
+    if (kwEl) kwEl.innerHTML = kws.map(k => `<span>${k}</span>`).join(' ');
+    const ctx = document.getElementById('ragContext');
+    if (ctx) ctx.textContent = rag.context || '';
+    const rs = document.getElementById('resStatus');
+    if (rs) rs.textContent = r.status || '';
+  }
+
+
+
+  document.getElementById('doneTicketBtn')?.addEventListener('click', () => {
+    const form = document.getElementById('ticketForm');
+    if (form) form.reset();
+    const result = document.getElementById('ticketResult');
+    if (result) result.classList.add('d-none');
+    const formCard = document.querySelector('#panel-submit .card');
+    if (formCard) formCard.classList.remove('d-none');
+    showPanel('panel-dashboard');
+  });
+
+
+  async function openTicketAnalysis(id) {
+    try {
+      const res = await fetch('/api/ticket/' + id, { credentials: 'same-origin' });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Not found');
+
+      // If no stored RAG, run pipeline on the fly
+      let rag = data.rag;
+      if (!rag || !rag.resolution) {
+        const rr = await fetch('/api/rag', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({
+            title: data.title || '',
+            description: data.description || '',
+            business_impact: 'Medium',
+            id: data.ticket_id
+          })
+        });
+        const ragData = await rr.json();
+        rag = ragData;
+      }
+
+      showPanel('panel-submit');
+      showTicketResult({
+        ticket_id: data.ticket_id,
+        title: data.title,
+        description: data.description,
+        category: data.category || (rag.classification && rag.classification.category),
+        confidence: data.confidence || (rag.classification && rag.classification.confidence),
+        severity: data.severity || (rag.classification && rag.classification.severity),
+        priority: data.priority || (rag.classification && rag.classification.priority),
+        status: data.status || 'Resolved',
+        rag: rag
+      });
+    } catch (e) {
+      alert('Could not open analysis: ' + e.message);
+    }
+  }
+
+  async function refreshTicketsTable() {
+    try {
+      const res = await fetch('/api/tickets', { credentials: 'same-origin' });
+      const list = await res.json();
+      const body = document.getElementById('ticketsBody');
+      const badge = document.querySelector('#panel-tickets .badge');
+      if (badge && Array.isArray(list)) badge.textContent = list.length + ' total';
+      if (!body || !Array.isArray(list)) return;
+      if (!list.length) {
+        body.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-5">No tickets yet.</td></tr>';
+        return;
+      }
+      body.innerHTML = list.map(t => {
+        const title = t.title || (t.description ? t.description.slice(0, 40) : '—');
+        const pri = (t.priority || 'p4').toLowerCase();
+        const statusBadge = t.status === 'Resolved'
+          ? '<span class="badge bg-success bg-opacity-15 text-success">RESOLVED</span>'
+          : `<span class="badge bg-warning bg-opacity-15 text-warning">${(t.status || 'OPEN').toUpperCase()}</span>`;
+        return `<tr class="ticket-row">
+          <td><div class="fw-bold text-primary">#${t.ticket_id}</div><div class="small">${title}</div></td>
+          <td><span class="badge bg-secondary bg-opacity-10 text-secondary">${t.category || '—'}</span></td>
+          <td><span class="badge pri-${pri}">${t.priority || '—'}</span></td>
+          <td>${statusBadge}</td>
+          <td class="text-end"><button type="button" class="btn btn-sm btn-outline-primary view-res" data-id="${t.ticket_id}">View →</button></td>
+        </tr>`;
+      }).join('');
+      body.querySelectorAll('.view-res').forEach(btn => {
+        btn.addEventListener('click', () => openTicketAnalysis(btn.getAttribute('data-id')));
+      });
+      // update home stats if present
+      const total = list.length;
+      const open = list.filter(x => x.status !== 'Resolved').length;
+      const resolved = list.filter(x => x.status === 'Resolved').length;
+      const st = document.getElementById('statTotal');
+      const so = document.getElementById('statOpen');
+      const sr = document.getElementById('statResolved');
+      if (st) st.textContent = total;
+      if (so) so.textContent = open;
+      if (sr) sr.textContent = resolved;
+    } catch (e) {
+      console.warn('refresh tickets failed', e);
+    }
+  }
+
+  document.querySelectorAll('.view-res').forEach(btn => {
+    btn.addEventListener('click', () => openTicketAnalysis(btn.getAttribute('data-id')));
+  });
+})();
+
+// ── Multi-Agent Pipeline ──────────────────────────────────────────
+async function runAgentPipeline() {
+  const ticket = document.getElementById('agentTicket').value.trim();
+  const email = document.getElementById('agentEmail').value.trim();
+  const customerName = document.getElementById('agentCustomerName').value.trim();
+  const department = document.getElementById('agentDepartment').value;
+  const output = document.getElementById('agentOutput');
+  const card = document.getElementById('agentResultCard');
+
+  if (!ticket) {
+    card.style.display = 'block';
+    output.innerHTML = '<span class="text-danger">Please enter a ticket description.</span>';
+    return;
+  }
+
+  card.style.display = 'block';
+  output.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><div class="mt-2 text-muted">AI agents are processing the ticket…</div></div>';
+
+  try {
+    const response = await fetch('/api/multi-agent', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ ticket, email, customerName, department }),
+    });
+    const data = await response.json();
+
+    if (!data.success) {
+      output.innerHTML = '<span class="text-danger">' + (data.message || 'Request failed') + '</span>';
+      return;
+    }
+
+    const r = data.result;
+    const statusColor = data.status === 'AUTO_RESOLVE' ? 'success' : 'warning';
+    const bannerBg = data.status === 'AUTO_RESOLVE' 
+        ? 'linear-gradient(135deg, #10b981, #059669)' 
+        : 'linear-gradient(135deg, #f59e0b, #d97706)';
+    const bannerIcon = data.status === 'AUTO_RESOLVE' ? '✨' : '⚠️';
+    
+    let html = '';
+
+    html += `
+    <div style="background: ${bannerBg}; color: white; border-radius: 16px; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 25px rgba(${data.status==='AUTO_RESOLVE'?'16,185,129':'245,158,11'},0.3); margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="background: rgba(255,255,255,0.2); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);">
+          ${bannerIcon}
+        </div>
+        <div>
+          <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; font-weight: 700;">Final Decision</div>
+          <div style="font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;">${data.status.replace('_', ' ')}</div>
+        </div>
+      </div>
+      <div style="text-align: right;">
+        <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9; font-weight: 700;">Confidence</div>
+        <div style="font-size: 1.8rem; font-weight: 800;">${data.confidence}%</div>
+      </div>
+    </div>`;
+
+    html += '<h6 style="font-weight: 800; color: #1e293b; margin-bottom: 16px; font-size: 1.05rem; letter-spacing: -0.01em;">Agent Execution Trace</h6>';
+
+    html += '<div class="row g-3 mb-3">';
+    
+    html += `
+    <div class="col-md-6">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); height: 100%;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(99,102,241,0.1); color: #6366f1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔍</div>
+          <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Diagnosis Agent</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Category</span>
+            <span style="font-weight: 700; color: #0f172a;">${r.diagnosis.category}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Base Confidence</span>
+            <span style="font-weight: 800; color: #6366f1; background: rgba(99,102,241,0.1); padding: 4px 10px; border-radius: 8px;">${(r.diagnosis.confidence * 100).toFixed(0)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+    html += `
+    <div class="col-md-6">
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); height: 100%;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+          <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(34,197,94,0.1); color: #22c55e; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔎</div>
+          <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Retrieval Agent</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e2e8f0;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Article</span>
+            <span style="font-weight: 700; color: #0f172a;">${r.retrieval.article.title}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #64748b; font-size: 0.9rem; font-weight: 500;">Similarity Score</span>
+            <span style="font-weight: 800; color: #22c55e; background: rgba(34,197,94,0.1); padding: 4px 10px; border-radius: 8px;">${(r.retrieval.similarity * 100).toFixed(1)}%</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    html += '</div>';
+
+    html += `
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 16px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(245,158,11,0.1); color: #f59e0b; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">🔧</div>
+        <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Resolution Agent</div>
+      </div>
+      <div style="background: #f8fafc; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; color: #334155; font-size: 0.95rem; margin-bottom: 20px; line-height: 1.6;">
+        ${r.resolution.response}
+      </div>
+      <div style="font-weight: 700; color: #475569; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px;">Step-by-Step Instructions</div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">`;
+      
+    r.resolution.steps.forEach((step, idx) => {
+      html += `
+        <div style="display: flex; align-items: flex-start; gap: 14px;">
+          <div style="width: 26px; height: 26px; border-radius: 8px; background: #e2e8f0; color: #475569; font-weight: 800; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;">${idx + 1}</div>
+          <div style="color: #1e293b; font-weight: 500; font-size: 0.95rem; line-height: 1.5; padding-top: 2px;">${step}</div>
+        </div>`;
+    });
+    html += '</div></div>';
+
+    html += `
+    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+        <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(6,182,212,0.1); color: #06b6d4; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">✓</div>
+        <div style="font-weight: 800; color: #1e293b; font-size: 1.05rem;">Validation Agent</div>
+      </div>
+      
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 12px;">
+        <div>
+          <div style="font-size: 0.8rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Computed Confidence</div>
+          <div style="font-size: 1.5rem; font-weight: 800; color: #0f172a;">${data.confidence}%</div>
+        </div>
+        <div style="background: rgba(${data.status==='AUTO_RESOLVE'?'16,185,129':'245,158,11'},0.1); color: ${data.status==='AUTO_RESOLVE'?'#059669':'#d97706'}; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 0.85rem;">
+          ${data.status}
+        </div>
+      </div>
+      
+      <div style="height: 12px; border-radius: 6px; background: #f1f5f9; overflow: visible; position: relative;">
+        <div style="height: 100%; background: ${bannerBg}; width: ${Math.min(data.confidence, 100)}%; border-radius: 6px; position: relative;">
+           <div style="position: absolute; right: 0; top: 50%; transform: translate(50%, -50%); width: 18px; height: 18px; background: white; border: 4px solid ${data.status==='AUTO_RESOLVE'?'#10b981':'#f59e0b'}; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1);"></div>
+        </div>
+      </div>
+      <div style="position: relative; height: 20px; margin-top: 8px;">
+        <div style="position: absolute; left: 0; font-size: 0.75rem; color: #94a3b8; font-weight: 700;">0%</div>
+        <div style="position: absolute; left: 70%; transform: translateX(-50%); font-size: 0.75rem; color: #f59e0b; font-weight: 800; display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 2px; height: 8px; background: #f59e0b; margin-bottom: 2px; margin-top: -12px;"></div>
+          70% Threshold
+        </div>
+        <div style="position: absolute; right: 0; font-size: 0.75rem; color: #94a3b8; font-weight: 700;">100%</div>
+      </div>
+    </div>`;
+
+    if (data.jira) {
+      if (data.jira.success) {
+        html += `<div style="background: linear-gradient(to right, #eff6ff, #ffffff); border: 1px solid #dbeafe; border-left: 6px solid #3b82f6; border-radius: 12px; padding: 20px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(59,130,246,0.05);">
+          <div style="font-weight: 800; color: #1e40af; margin-bottom: 12px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">🔗</span> Jira Ticket Created
+          </div>
+          <div class="row g-3" style="font-size: 0.9rem; color: #1e3a8a;">
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Ticket ID</div>
+              <span class="badge bg-primary" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">${data.jira.ticket_id}</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Status</div>
+              <span class="badge bg-info text-dark" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">In Progress</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Assignee</div>
+              <span style="font-weight: 600;">IT Escalations Team</span>
+            </div>
+            <div class="col-6">
+              <div style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 2px;">Priority</div>
+              <span class="badge bg-danger" style="font-size: 0.85rem; padding: 6px 10px; border-radius: 6px;">High</span>
+            </div>
+          </div>
+        </div>`;
+      } else {
+        html += `<div style="background: #fefce8; border: 1px solid #fef08a; border-left: 6px solid #eab308; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; color: #854d0e;">
+          <strong style="color: #713f12;">🔗 Jira:</strong> ${data.jira.message || 'Escalation queued'}
+          ${data.jira.ticket_id ? ' — ID: <code style="background:rgba(234,179,8,0.2); padding:2px 6px; border-radius:4px; font-weight:bold;">' + data.jira.ticket_id + '</code>' : ''}
+        </div>`;
+      }
+    }
+    if (data.email) {
+      if (data.email.success) {
+        html += `<div style="background: linear-gradient(to right, #f0fdf4, #ffffff); border: 1px solid #dcfce3; border-left: 6px solid #22c55e; border-radius: 12px; padding: 20px; margin-bottom: 12px; box-shadow: 0 4px 15px rgba(34,197,94,0.05);">
+          <div style="font-weight: 800; color: #166534; margin-bottom: 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 1.2rem;">📧</span> Email Notification Sent
+          </div>
+          <div style="font-size: 0.95rem; color: #15803d; font-weight: 500;">
+            Automated resolution steps sent successfully to <strong style="color: #14532d; background: rgba(34,197,94,0.15); padding: 2px 8px; border-radius: 6px;">${email || 'user'}</strong>.
+          </div>
+        </div>`;
+      } else {
+        html += `<div style="background: #f0f9ff; border: 1px solid #bae6fd; border-left: 6px solid #0ea5e9; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; color: #0369a1;">
+          <strong style="color: #0c4a6e;">📧 Email:</strong> ${data.email.message || 'Notification processed'}
+        </div>`;
+      }
+    }
+
+    output.innerHTML = html;
+  } catch (err) {
+    output.innerHTML = '<span class="text-danger">Error: ' + err.message + '</span>';
+  }
+}
+
+// Fetch integration status
+fetch('/api/agents/status', { credentials: 'same-origin' })
+  .then(r => r.json())
+  .then(data => {
+    if (data.integrations) {
+      const jira = document.getElementById('agentJiraStatus');
+      const email = document.getElementById('agentEmailStatus');
+      if (jira) {
+        jira.textContent = data.integrations.jira_configured ? 'Configured' : 'Simulated Mode';
+        jira.className = 'badge ' + (data.integrations.jira_configured ? 'bg-success' : 'bg-warning text-dark') + ' ' + 'font-size-75';
+        jira.style.fontSize = '.75rem';
+      }
+      if (email) {
+        email.textContent = data.integrations.email_configured ? 'Configured' : 'Simulated Mode';
+        email.className = 'badge ' + (data.integrations.email_configured ? 'bg-success' : 'bg-warning text-dark');
+        email.style.fontSize = '.75rem';
+      }
+    }
+  })
+  .catch(() => {});
+</script>
+</body>
+</html>

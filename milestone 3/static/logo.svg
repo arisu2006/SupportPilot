@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="spGrad" x1="8" y1="4" x2="56" y2="60" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.55" stop-color="#0EA5E9"/>
+      <stop offset="1" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="spShine" x1="20" y1="12" x2="44" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded shield / app tile -->
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#spGrad)"/>
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#spShine)"/>
+  <!-- Pilot headset arc -->
+  <path d="M18 28c0-8 6.5-14 14-14s14 6 14 14" stroke="#fff" stroke-width="3.2" stroke-linecap="round" fill="none" opacity="0.95"/>
+  <!-- Ear cups -->
+  <rect x="15" y="26" width="7" height="12" rx="3.5" fill="#fff"/>
+  <rect x="42" y="26" width="7" height="12" rx="3.5" fill="#fff"/>
+  <!-- AI spark / ticket node -->
+  <circle cx="32" cy="38" r="5.5" fill="#fff"/>
+  <path d="M32 33.5v9M27.5 38h9" stroke="#2563EB" stroke-width="2" stroke-linecap="round"/>
+  <!-- Small wing / check accent -->
+  <path d="M24 46.5l3.2 3.2 6.5-7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.9"/>
+</svg>
