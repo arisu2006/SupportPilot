@@ -2,24 +2,26 @@
 
 AI-assisted IT ticket desk with **multi-agent workflows**, knowledge retrieval, cited resolutions, JWT auth, **Jira escalation**, and **email automation**.
 
-## Features
+## 🏁 Milestones & Core Modules
 
-### Milestone 1–2 (existing)
-- **JWT authentication** (PyJWT) — register / login / protected routes
-- Premium light dashboard
-- Submit ticket → classify + full RAG result **in the same tab**
-- Tickets stored in SQLite (`tickets.db`) and listed under **Tickets**
-- One-click Google demo sign-in
+▼ 🧩 **Milestone 1 (Weeks 1–2) — Ticket Processing & Classification**
+- **Ticket Intake** — Accepts and ingests IT support requests via web forms or JSON payloads with fields like employee name, email, title, description, and department
+- **Text Preprocessing** — Cleans ticket text through lowercase conversion, symbol removal, tokenization, and stop-word handling
+- **AI Classification Engine** — Uses TF-IDF vectorization and Logistic Regression to automatically categorize issues into Network, VPN, Password, Software, and Hardware
+- **Severity & Priority Engine** — Automatically predicts issue severity (Low / Medium / High) and calculates business priority (P1–P4)
 
-### Milestone 3 — Multi-Agent Workflows & Integrations
-- **Diagnosis Agent** — classifies ticket category (Network/VPN, Auth, Email, Printer, Performance)
-- **Retrieval Agent** — TF-IDF + cosine similarity over knowledge base
-- **Resolution Agent** — generates step-by-step troubleshooting workflows
-- **Validation Agent** — weighted confidence scoring (diagnosis × retrieval × completeness)
-- **Escalation Agent** — routes low-confidence tickets to Jira
-- **Jira integration** — creates issues via REST API when confidence &lt; 70%
-- **Email automation** — sends resolution steps to user on AUTO_RESOLVE
-- Multi-agent UI at `/multi-agent`
+▼ 📚 **Milestone 2 (Weeks 3–4) — Knowledge Retrieval & Resolution Generation**
+- **Enterprise Knowledge Base Integration** — Connects structured documentation like troubleshooting guides, IT policies, and authentication manuals
+- **Ticket Analysis** — Extracts key technical terms and constructs optimized search queries from ticket contents
+- **RAG Retrieval Engine** — Employs TF-IDF and cosine similarity to search the knowledge base and surface the most relevant articles
+- **Context Augmentation & Generation** — Formats retrieved documents into a secure context window to prompt an LLM for precise, step-by-step troubleshooting with source citations
+
+▼ 🤖 **Milestone 3 (Weeks 5–6) — Multi-Agent Workflows & Integrations**
+- **Agent Orchestration Pipeline** — Coordinates specialized, single-purpose AI agents (Diagnosis, Retrieval, Resolution, Validation, Escalation) into a cohesive troubleshooting workflow
+- **Confidence Scoring Validation** — Dynamically evaluates resolution quality through a weighted formula combining category match rate, semantic search similarity, and step completeness
+- **Automated ITSM Routing (Jira Integration)** — Intercepts low-confidence resolutions (&lt; 70%) and automatically escalates them to a Jira board via REST API
+- **User Communication (Email Automation)** — Actively dispatches SMTP emails containing self-service guides when agents achieve an AUTO_RESOLVE status
+- **Interactive 3D Dashboard** — Provides a real-time, full-screen UI displaying agent telemetry, status pills, and integration health states using responsive vector SVGs
 
 ## Project Structure
 
