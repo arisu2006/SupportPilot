@@ -55,7 +55,7 @@
       <a class="nav-link-sp" href="/dashboard#tickets">🎫 Tickets</a>
       <a class="nav-link-sp active" href="/multi-agent">🤖 AI Agents</a>
       <a class="nav-link-sp" href="/dashboard#integrations">🔗 Integrations</a>
-      <a class="nav-link-sp" href="/dashboard">📊 Analytics</a>
+      <a class="nav-link-sp" href="/dashboard#analytics">📊 Analytics & ML</a>
       <a class="nav-link-sp" href="/logout">⚙ Logout</a>
     </div>
 
@@ -69,14 +69,17 @@
       </div>
       <style>
         .agent-node-card {
-          transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
           cursor: default;
-          border: 1px solid var(--border);
+          border: 2px solid var(--border);
+          border-radius: var(--radius);
+          box-shadow: var(--clay-shadow);
+          background: #eaf0f8;
         }
         .agent-node-card:hover {
-          transform: translateY(-8px) scale(1.02);
-          box-shadow: 0 20px 40px rgba(79, 70, 229, 0.12), 0 8px 16px rgba(15, 23, 42, 0.04);
-          border-color: rgba(79, 70, 229, 0.3);
+          transform: translateY(-8px) scale(1.03);
+          box-shadow: var(--clay-shadow-lg);
+          border-color: rgba(99, 102, 241, 0.4);
         }
         .status-pill {
           display: inline-flex; align-items: center; gap: 6px;
