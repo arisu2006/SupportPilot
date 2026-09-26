@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="app-body light-theme">
   <div class="bg-mesh"></div>
@@ -43,6 +44,10 @@
         </button>
         <button type="button" class="nav-item" data-panel="panel-agents">
           <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg></span><span>AI Agents</span>
+          <span class="nav-glow"></span>
+        </button>
+        <button type="button" class="nav-item" data-panel="panel-analytics">
+          <span class="nav-icon-3d"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span><span>Analytics & ML</span>
           <span class="nav-glow"></span>
         </button>
         <button type="button" class="nav-item" data-panel="panel-account">
@@ -601,6 +606,187 @@
           </div>
         </section>
 
+        <!-- MILESTONE 4: ANALYTICS & ESCALATION DASHBOARD -->
+        <section class="panel" id="panel-analytics">
+          <div class="dash-header mb-4">
+            <div>
+              <h2 style="font-weight:800; font-size:1.6rem; letter-spacing:-0.02em; color:var(--text); margin-bottom:4px;">Support Analytics & Escalation Monitoring</h2>
+              <p class="text-muted" style="margin:0; font-size:0.95rem;">Milestone 4 — Real-time operational KPIs, automatic escalation rules, and AI model evaluation metrics.</p>
+            </div>
+          </div>
+
+          <!-- 9 KPI METRICS GRID -->
+          <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter">
+                <div class="stat-icon-wrap si-blue"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 5.88 14 10l5.83-2.12a.5.5 0 0 0 .36-.61l-1.5-6.23a.5.5 0 0 0-.61-.36L15 5.88z"></path><path d="M9.8 15.65 13.9 14l-2.1-5.83a.5.5 0 0 0-.61-.36l-6.23 1.5a.5.5 0 0 0-.36.61l2.1 5.83a.5.5 0 0 0 .61.36l6.23-1.5z"></path></svg></div>
+                <div>
+                  <div class="stat-label">Total Tickets</div>
+                  <div class="stat-value" id="kpiTotal">0</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-1">
+                <div class="stat-icon-wrap si-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="10" rx="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path></svg></div>
+                <div>
+                  <div class="stat-label">AI Resolution Rate</div>
+                  <div class="stat-value" id="kpiAiRate">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-2">
+                <div class="stat-icon-wrap si-amber"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+                <div>
+                  <div class="stat-label">Avg Resolution Time</div>
+                  <div class="stat-value" id="kpiAvgResTime">0 min</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-3">
+                <div class="stat-icon-wrap si-purple"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg></div>
+                <div>
+                  <div class="stat-label">Customer Satisfaction</div>
+                  <div class="stat-value" id="kpiCSAT">0/5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter">
+                <div class="stat-icon-wrap si-cyan"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg></div>
+                <div>
+                  <div class="stat-label">Classification Accuracy</div>
+                  <div class="stat-value" id="kpiAccuracy">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-1">
+                <div class="stat-icon-wrap si-green"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
+                <div>
+                  <div class="stat-label">Resolution Success</div>
+                  <div class="stat-value" id="kpiSuccess">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-2">
+                <div class="stat-icon-wrap si-blue"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
+                <div>
+                  <div class="stat-label">KB Coverage</div>
+                  <div class="stat-value" id="kpiKb">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+              <div class="stat-card stat-unique card-3d dash-enter delay-3">
+                <div class="stat-icon-wrap si-rose"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div>
+                <div>
+                  <div class="stat-label">System Uptime</div>
+                  <div class="stat-value" id="kpiUptime">99.7%</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <div class="stat-card stat-unique card-3d dash-enter" style="padding: 1.25rem 1.5rem;">
+              <div class="stat-icon-wrap si-cyan" style="width:54px; height:54px;"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
+              <div>
+                <div class="stat-label" style="font-size:0.85rem;">Average AI Response Time</div>
+                <div class="stat-value" id="kpiAiResponseTime" style="font-size:1.8rem; color:#0891b2;">0.00 sec</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- INTERACTIVE CHARTS SECTION -->
+          <h3 style="font-weight:800; font-size:1.25rem; margin-bottom:1rem; color:var(--text);">📈 Ticket Analysis & Distribution</h3>
+          <div class="row g-4 mb-4">
+            <div class="col-lg-4">
+              <div class="card p-3 h-100 card-3d">
+                <h5 style="font-weight:700; font-size:1rem; margin-bottom:1rem;">Tickets by Category</h5>
+                <div style="position:relative; height:240px;"><canvas id="chartCategory"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card p-3 h-100 card-3d">
+                <h5 style="font-weight:700; font-size:1rem; margin-bottom:1rem;">AI Resolution vs Escalation</h5>
+                <div style="position:relative; height:240px;"><canvas id="chartStatus"></canvas></div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card p-3 h-100 card-3d">
+                <h5 style="font-weight:700; font-size:1rem; margin-bottom:1rem;">Tickets by Priority</h5>
+                <div style="position:relative; height:240px;"><canvas id="chartPriority"></canvas></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- AUTOMATIC ESCALATION MONITOR -->
+          <div class="card mb-4 dash-enter">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <span style="font-weight:800; font-size:1.1rem; color:#ef4444;">🚨 Automatic Escalation Engine</span>
+              <span class="badge bg-danger bg-opacity-10 text-danger" id="escalationCountBadge">0 Escalated</span>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table premium-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Category</th>
+                      <th>Priority</th>
+                      <th>AI Confidence</th>
+                      <th>Escalation Reason</th>
+                      <th>Customer Request</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="escalationTableBody">
+                    <tr><td colspan="7" class="text-center text-muted py-4">Loading escalation events...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- HUMAN INTERVENTION ALERTS -->
+          <div class="mb-4">
+            <h4 style="font-weight:800; font-size:1.1rem; margin-bottom:0.75rem;">👨💻 Human Intervention Monitor</h4>
+            <div id="humanInterventionContainer">
+              <div class="alert alert-info border-0 rounded-3">No critical escalations currently requiring human intervention.</div>
+            </div>
+          </div>
+
+          <!-- AI CLASSIFIER MODEL EVALUATION -->
+          <div class="card p-4 dash-enter mb-4">
+            <h4 style="font-weight:800; font-size:1.1rem; margin-bottom:1rem;">🎯 AI Classifier Model Testing & Evaluation</h4>
+            <div class="row g-4 align-items-center">
+              <div class="col-md-3 text-center border-end">
+                <div style="font-size:2.2rem; font-weight:800; color:var(--primary);" id="mlAccuracy">0%</div>
+                <div class="text-muted" style="font-size:0.85rem; font-weight:600; text-transform:uppercase;">Overall Accuracy</div>
+              </div>
+              <div class="col-md-3 text-center border-end">
+                <div style="font-size:2.2rem; font-weight:800; color:#10b981;" id="mlPrecision">0%</div>
+                <div class="text-muted" style="font-size:0.85rem; font-weight:600; text-transform:uppercase;">Precision</div>
+              </div>
+              <div class="col-md-3 text-center border-end">
+                <div style="font-size:2.2rem; font-weight:800; color:#f59e0b;" id="mlRecall">0%</div>
+                <div class="text-muted" style="font-size:0.85rem; font-weight:600; text-transform:uppercase;">Recall</div>
+              </div>
+              <div class="col-md-3 text-center">
+                <div style="font-size:2.2rem; font-weight:800; color:#06b6d4;" id="mlF1">0%</div>
+                <div class="text-muted" style="font-size:0.85rem; font-weight:600; text-transform:uppercase;">F1 Score</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </div>
   </div>
@@ -625,6 +811,7 @@
     'panel-submit': 'Submit Ticket',
     'panel-tickets': 'Tickets',
     'panel-agents': 'AI Agents',
+    'panel-analytics': 'Analytics & Optimization',
     'panel-account': 'Account'
   };
 
@@ -647,6 +834,10 @@
     if (titleEl) titleEl.textContent = titles[id] || 'Home';
     document.getElementById('sidebar')?.classList.remove('open');
     history.replaceState(null, '', '#' + id.replace('panel-', ''));
+
+    if (id === 'panel-analytics') {
+      loadAnalyticsData();
+    }
   }
 
   document.querySelectorAll('.nav-item[data-panel]').forEach(btn => {
@@ -663,7 +854,7 @@
   const map = {
     dashboard: 'panel-dashboard', submit: 'panel-submit',
     tickets: 'panel-tickets', agents: 'panel-agents',
-    account: 'panel-account'
+    analytics: 'panel-analytics', account: 'panel-account'
   };
   if (hash && map[hash.split('&')[0]]) showPanel(map[hash.split('&')[0]]);
 
@@ -1167,6 +1358,161 @@ fetch('/api/agents/status', { credentials: 'same-origin' })
     }
   })
   .catch(() => {});
+
+// --- MILESTONE 4: ANALYTICS & ESCALATION JS ---
+let catChart = null, statusChart = null, prioChart = null;
+
+async function loadAnalyticsData() {
+  try {
+    const res = await fetch('/api/analytics', { credentials: 'same-origin' });
+    if (!res.ok) return;
+    const data = await res.json();
+    const m = data.metrics || {};
+
+    // 9 KPI metrics
+    if (document.getElementById('kpiTotal')) document.getElementById('kpiTotal').textContent = m.total_tickets || 0;
+    if (document.getElementById('kpiAiRate')) document.getElementById('kpiAiRate').textContent = (m.ai_resolution_rate || 0) + '%';
+    if (document.getElementById('kpiAvgResTime')) document.getElementById('kpiAvgResTime').textContent = (m.avg_resolution_time || 0) + ' min';
+    if (document.getElementById('kpiCSAT')) document.getElementById('kpiCSAT').textContent = (m.customer_satisfaction || 0) + '/5';
+    if (document.getElementById('kpiAccuracy')) document.getElementById('kpiAccuracy').textContent = (m.classification_accuracy || 0) + '%';
+    if (document.getElementById('kpiSuccess')) document.getElementById('kpiSuccess').textContent = (m.resolution_success_rate || 0) + '%';
+    if (document.getElementById('kpiKb')) document.getElementById('kpiKb').textContent = (m.kb_coverage || 0) + '%';
+    if (document.getElementById('kpiUptime')) document.getElementById('kpiUptime').textContent = (m.system_uptime || 99.7) + '%';
+    if (document.getElementById('kpiAiResponseTime')) document.getElementById('kpiAiResponseTime').textContent = (m.avg_ai_response_time || 0.85).toFixed(2) + ' sec';
+
+    // Render Charts
+    renderAnalyticsCharts(data.charts || {});
+  } catch (e) {
+    console.error('Error loading analytics metrics:', e);
+  }
+
+  // Load escalations table & alerts
+  try {
+    const escRes = await fetch('/api/analytics/escalations', { credentials: 'same-origin' });
+    if (escRes.ok) {
+      const escData = await escRes.json();
+      renderEscalationTable(escData.escalations || []);
+    }
+  } catch (e) {
+    console.error('Error loading escalations:', e);
+  }
+
+  // Load ML evaluation metrics
+  try {
+    const mlRes = await fetch('/api/analytics/classifier-test', { credentials: 'same-origin' });
+    if (mlRes.ok) {
+      const mlData = await mlRes.json();
+      if (document.getElementById('mlAccuracy')) document.getElementById('mlAccuracy').textContent = (mlData.accuracy || 0) + '%';
+      if (document.getElementById('mlPrecision')) document.getElementById('mlPrecision').textContent = (mlData.precision || 0) + '%';
+      if (document.getElementById('mlRecall')) document.getElementById('mlRecall').textContent = (mlData.recall || 0) + '%';
+      if (document.getElementById('mlF1')) document.getElementById('mlF1').textContent = (mlData.f1_score || 0) + '%';
+    }
+  } catch (e) {
+    console.error('Error loading ML evaluation:', e);
+  }
+}
+
+function renderAnalyticsCharts(charts) {
+  if (typeof Chart === 'undefined') return;
+
+  // 1. Categories Bar Chart
+  const ctxCat = document.getElementById('chartCategory');
+  if (ctxCat) {
+    if (catChart) catChart.destroy();
+    const cats = charts.categories || [];
+    catChart = new Chart(ctxCat, {
+      type: 'bar',
+      data: {
+        labels: cats.length ? cats.map(c => c.category) : ['No Data'],
+        datasets: [{
+          label: 'Tickets',
+          data: cats.length ? cats.map(c => c.count) : [0],
+          backgroundColor: '#4f46e5',
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+
+  // 2. Status Doughnut Chart
+  const ctxStatus = document.getElementById('chartStatus');
+  if (ctxStatus) {
+    if (statusChart) statusChart.destroy();
+    const st = charts.statuses || [];
+    statusChart = new Chart(ctxStatus, {
+      type: 'doughnut',
+      data: {
+        labels: st.length ? st.map(s => s.status) : ['No Data'],
+        datasets: [{
+          data: st.length ? st.map(s => s.count) : [0],
+          backgroundColor: ['#10b981', '#ef4444', '#f59e0b']
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false }
+    });
+  }
+
+  // 3. Priority Bar Chart
+  const ctxPrio = document.getElementById('chartPriority');
+  if (ctxPrio) {
+    if (prioChart) prioChart.destroy();
+    const pr = charts.priorities || [];
+    prioChart = new Chart(ctxPrio, {
+      type: 'bar',
+      data: {
+        labels: pr.length ? pr.map(p => p.priority) : ['No Data'],
+        datasets: [{
+          label: 'Tickets',
+          data: pr.length ? pr.map(p => p.count) : [0],
+          backgroundColor: ['#94a3b8', '#3b82f6', '#f59e0b', '#ef4444'],
+          borderRadius: 6
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    });
+  }
+}
+
+function renderEscalationTable(escalations) {
+  const tbody = document.getElementById('escalationTableBody');
+  const badge = document.getElementById('escalationCountBadge');
+  const alertsContainer = document.getElementById('humanInterventionContainer');
+
+  if (badge) badge.textContent = `${escalations.length} Escalated`;
+
+  if (!tbody) return;
+
+  if (escalations.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted py-4">No escalated tickets found. Standard AI automated resolution operating smoothly.</td></tr>`;
+    if (alertsContainer) alertsContainer.innerHTML = `<div class="alert alert-success border-0 rounded-3">✅ All systems normal — No tickets currently require human intervention.</div>`;
+    return;
+  }
+
+  tbody.innerHTML = escalations.map(t => `
+    <tr>
+      <td style="font-weight:700;">#T${t.ticket_id}</td>
+      <td><span class="badge bg-light text-dark border">${t.category || 'General'}</span></td>
+      <td><span class="badge ${t.priority === 'P1' || t.priority === 'Critical' ? 'bg-danger' : 'bg-warning text-dark'}">${t.priority || 'Medium'}</span></td>
+      <td style="font-weight:600; color:${(t.confidence || 0) < 70 ? '#ef4444' : '#10b981'};">${(t.confidence || 50).toFixed(0)}%</td>
+      <td class="text-danger" style="font-size:0.85rem; font-weight:500;">${t.escalation_reason || 'Manual escalation rule'}</td>
+      <td>${t.customer_requested_human ? '<span class="badge bg-warning text-dark">Yes</span>' : '<span class="badge bg-light text-muted">No</span>'}</td>
+      <td><span class="badge bg-danger bg-opacity-10 text-danger">Escalated</span></td>
+    </tr>
+  `).join('');
+
+  if (alertsContainer) {
+    alertsContainer.innerHTML = escalations.map(t => `
+      <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center justify-content-between mb-2 rounded-3">
+        <div>
+          <strong>🚨 Ticket #T${t.ticket_id} requires human intervention</strong> | Priority: <code>${t.priority || 'High'}</code> | AI Confidence: <code>${(t.confidence || 50).toFixed(0)}%</code>
+          <div class="small text-muted mt-1">Reason: ${t.escalation_reason || 'Threshold trigger'}</div>
+        </div>
+        <button class="btn btn-sm btn-outline-danger" onclick="showPanel('panel-tickets')">Assign Agent</button>
+      </div>
+    `).join('');
+  }
+}
 </script>
 </body>
 </html>
